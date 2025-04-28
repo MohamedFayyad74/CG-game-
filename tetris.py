@@ -152,3 +152,29 @@ while True:
             if col:
                 figure_rect.x, figure_rect.y = x * TILE, y * TILE
                 pygame.draw.rect(game_sc, col, figure_rect)
+    # draw next figure
+    for i in range(4):
+        figure_rect.x = next_figure[i].x * TILE + 380
+        figure_rect.y = next_figure[i].y * TILE + 185
+        pygame.draw.rect(sc, next_color, figure_rect)
+    # draw titles
+    sc.blit(title_tetris, (485, -10))
+    sc.blit(title_score, (535, 780))
+    sc.blit(font.render(str(score), True, pygame.Color('white')), (550, 840))
+    sc.blit(title_record, (525, 650))
+    sc.blit(font.render(record, True, pygame.Color('gold')), (550, 710))
+    # game over
+    for i in range(W):
+        if field[0][i]:
+            set_record(record, score)
+            field = [[0 for i in range(W)] for i in range(H)]
+            anim_count, anim_speed, anim_limit = 0, 60, 2000
+            score = 0
+            for i_rect in grid:
+                pygame.draw.rect(game_sc, get_color(), i_rect)
+                sc.blit(game_sc, (20, 20))
+                pygame.display.flip()
+                clock.tick(200)
+
+    pygame.display.flip()
+    clock.tick(FPS)
