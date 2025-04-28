@@ -124,3 +124,31 @@ while True:
             if not check_borders():
                 figure = deepcopy(figure_old)
                 break
+            # check lines
+    line, lines = H - 1, 0
+    for row in range(H - 1, -1, -1):
+        count = 0
+        for i in range(W):
+            if field[row][i]:
+                count += 1
+            field[line][i] = field[row][i]
+        if count < W:
+            line -= 1
+        else:
+            anim_speed += 3
+            lines += 1
+    # compute score
+    score += scores[lines]
+    # draw grid
+    [pygame.draw.rect(game_sc, (40, 40, 40), i_rect, 1) for i_rect in grid]
+    # draw figure
+    for i in range(4):
+        figure_rect.x = figure[i].x * TILE
+        figure_rect.y = figure[i].y * TILE
+        pygame.draw.rect(game_sc, color, figure_rect)
+    # draw field
+    for y, raw in enumerate(field):
+        for x, col in enumerate(raw):
+            if col:
+                figure_rect.x, figure_rect.y = x * TILE, y * TILE
+                pygame.draw.rect(game_sc, col, figure_rect)
